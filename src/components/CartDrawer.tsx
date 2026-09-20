@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { X, Trash2, Plus, Minus, MessageCircle, ShoppingBag, ArrowRight } from 'lucide-react';
 import { CartItem } from '../types';
+import { FALLBACK_CAKE_IMAGE } from '../data/bakeryData';
 import { getCartWhatsAppUrl } from '../utils/whatsapp';
 
 interface CartDrawerProps {
@@ -114,6 +115,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                       src={cartItem.item.image}
                       alt={cartItem.item.name}
                       referrerPolicy="no-referrer"
+                      onError={(e) => { e.currentTarget.src = FALLBACK_CAKE_IMAGE; }}
                       className="w-16 h-16 rounded-lg object-cover bg-[#F3ECE2] shrink-0"
                     />
                     <div className="flex-1 min-w-0">

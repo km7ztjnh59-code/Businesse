@@ -4,14 +4,18 @@ export const BAKERY_INFO = {
   name: "Jerryyss Bakery",
   tagline: "Fresh-baked, made-to-order treats — baked daily, delivered locally",
   motto: "Little treats. Big happiness.",
-  whatsappNumber: "+919987826949",
-  displayPhone: "+91 99878 26949",
+  chefName: "KHAN NOOR",
+  whatsappNumber: "+919372507748",
+  displayPhone: "+91 93725 07748",
   email: "hello@jerryyssbakery.com",
-  instagram: "@jerryyss.bakery",
+  instagram: "@jerrys_bakery",
+  instagramUrl: "https://www.instagram.com/jerrys_bakery?stkn=Y29ubDRvNHdvYjht",
   location: "Bakehouse Kitchen, Local Delivery Area",
   hours: "Monday – Saturday: 8:00 AM – 7:30 PM (Sunday: 9:00 AM – 4:00 PM)",
   leadTimeNotice: "Please order at least 24–48 hours in advance for celebration cakes.",
 };
+
+export const FALLBACK_CAKE_IMAGE = 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=800&q=80';
 
 export const CAKE_WEIGHT_OPTIONS: WeightOption[] = [
   { id: '0.5kg', label: '0.5 kg (Bento / Petite)', sublabel: 'Serves 2-3', multiplier: 0.58 },
@@ -106,7 +110,7 @@ export const MENU_ITEMS: MenuItem[] = [
     price: 450,
     description: 'Cute single/double serving lunchbox cake with smooth pastel buttercream and your customized handwritten piped message.',
     servingSize: 'Serves 1-2 (Base 500g)',
-    image: 'https://images.unsplash.com/photo-1535141192574-5d4897c13136?auto=format&fit=crop&w=800&q=80',
+    image: 'https://images.unsplash.com/photo-1557925923-cd4648e211a0?auto=format&fit=crop&w=800&q=80',
     tags: ['Trending', 'Bento', 'Cute Gift'],
     isEgglessAvailable: true,
     leadTimeHours: 12,
@@ -181,7 +185,7 @@ export const MENU_ITEMS: MenuItem[] = [
     price: 1350,
     description: 'Spiced caramel biscuit sponge layered with smooth cookie butter frosting, melted Biscoff drip, and golden crushed Speculoos cookies.',
     servingSize: 'Serves 6-8 (Base 1 kg)',
-    image: 'https://images.unsplash.com/photo-1535141192574-5d4897c13136?auto=format&fit=crop&w=800&q=80',
+    image: 'https://images.unsplash.com/photo-1579372786545-d24232daf58c?auto=format&fit=crop&w=800&q=80',
     tags: ['Speculoos', 'Crowd Pleaser'],
     isEgglessAvailable: true,
     leadTimeHours: 24,
@@ -233,7 +237,7 @@ export const GALLERY_ITEMS: GalleryItem[] = [
     id: 'gal-2',
     title: 'Pastel Korean Bento Gift Cake',
     category: 'Bento',
-    image: 'https://images.unsplash.com/photo-1535141192574-5d4897c13136?auto=format&fit=crop&w=900&q=80',
+    image: 'https://images.unsplash.com/photo-1627834377411-8da5f4f09de8?auto=format&fit=crop&w=900&q=80',
     description: 'Soft lavender buttercream with personalized cursive text'
   },
   {
@@ -261,7 +265,7 @@ export const GALLERY_ITEMS: GalleryItem[] = [
     id: 'gal-6',
     title: 'Lotus Biscoff Caramel Drip',
     category: 'Cakes',
-    image: 'https://images.unsplash.com/photo-1586788680434-30d324b2d46f?auto=format&fit=crop&w=900&q=80',
+    image: 'https://images.unsplash.com/photo-1579372786545-d24232daf58c?auto=format&fit=crop&w=900&q=80',
     description: 'Decadent cookie butter drips with Speculoos cookie crowns'
   }
 ];

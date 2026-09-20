@@ -27,47 +27,50 @@ Could you please confirm your availability for this date? Thank you! 🧁`
   return `https://wa.me/${BAKERY_INFO.whatsappNumber.replace(/[^0-9]/g, '')}?text=${text}`;
 }
 
-export function getPaidOrderWhatsAppUrl(order: CompletedOrder): string {
+export function getPaidOrderSummaryText(order: CompletedOrder): string {
   const itemsText = order.items
     .map(
       (item, idx) =>
         `${idx + 1}. *${item.quantity}x ${item.productName}* [${item.selectedWeight.label}]
    - Price: ₹${(item.unitPrice * item.quantity).toLocaleString('en-IN')}
-   - Diet: ${item.isEggless ? '100% Eggless 🌱' : 'Standard'}
+   - Diet: ${item.isEggless ? '100% Eggless 🌱' : 'Standard Recipe'}
    ${item.customMessage ? `- Message on Cake: "${item.customMessage}"` : ''}
-   ${item.selectedStyle ? `- Style: ${item.selectedStyle}` : ''}
+   ${item.selectedStyle ? `- Decoration Style: ${item.selectedStyle}` : ''}
    ${item.specialNote ? `- Special Note: ${item.specialNote}` : ''}`
     )
     .join('\n\n');
 
-  const text = encodeURIComponent(
-`🎉 *NEW PAID ORDER — Jerryyss Bakery* 🎂
+  return `🎉 *NEW ORDER SUMMARY — Jerryyss Bakery* 🎂
+*Head Chef:* KHAN NOOR
 ━━━━━━━━━━━━━━━━━━━━━━
 *Order ID:* ${order.orderId}
-*Status:* ✅ Payment Confirmed (${order.paymentMethod})
-*Transaction Ref:* ${order.paymentRef}
-*Date of Order:* ${order.paidAt}
+*Payment Status:* ✅ Paid to ${BAKERY_INFO.whatsappNumber.replace(/[^0-9]/g, '').slice(-10)} (${order.paymentMethod})
+*Transaction / UTR Ref:* ${order.paymentRef}
+*Order Placed At:* ${order.paidAt}
 
 🧁 *ORDER ITEMS:*
 ${itemsText}
 
 ━━━━━━━━━━━━━━━━━━━━━━
-*Subtotal:* ₹${Math.round(order.subtotal).toLocaleString('en-IN')}
+*Item Subtotal:* ₹${Math.round(order.subtotal).toLocaleString('en-IN')}
+*Special Packaging:* FREE
 *Delivery Fee:* ${order.deliveryFee === 0 ? 'FREE' : `₹${order.deliveryFee}`}
-*Total Paid:* ₹${Math.round(order.total).toLocaleString('en-IN')}
+*Grand Total Paid:* ₹${Math.round(order.total).toLocaleString('en-IN')}
 
-👤 *CUSTOMER DETAILS:*
+👤 *CUSTOMER & DELIVERY DETAILS:*
 • Name: ${order.customer.name}
-• Phone: ${order.customer.phone}
-• Delivery Type: ${order.customer.deliveryType === 'delivery' ? 'Local Doorstep Delivery' : 'Self Pickup from Kitchen'}
+• Contact Phone: ${order.customer.phone}
+• Order Type: ${order.customer.deliveryType === 'delivery' ? 'Local Doorstep Delivery' : 'Self Pickup from Kitchen'}
 • Required Date: ${order.customer.deliveryDate}
-• Preferred Slot: ${order.customer.deliveryTimeSlot}
-• Address: ${order.customer.address || 'Self Pickup'}
-${order.customer.specialInstructions ? `• Instructions: ${order.customer.specialInstructions}` : ''}
+• Preferred Time Slot: ${order.customer.deliveryTimeSlot}
+• Delivery Address: ${order.customer.address || 'Kitchen Pickup'}
+${order.customer.specialInstructions ? `• Special Instructions: ${order.customer.specialInstructions}` : ''}
 
-Thank you! Please prepare this order as per schedule. ✨`
-  );
+Thank you Chef KHAN NOOR! Please confirm once this order is received. ✨`;
+}
 
+export function getPaidOrderWhatsAppUrl(order: CompletedOrder): string {
+  const text = encodeURIComponent(getPaidOrderSummaryText(order));
   return `https://wa.me/${BAKERY_INFO.whatsappNumber.replace(/[^0-9]/g, '')}?text=${text}`;
 }
 

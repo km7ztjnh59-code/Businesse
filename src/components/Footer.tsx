@@ -33,7 +33,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             </div>
 
             <p className="text-sm text-[#EADBCB]/80 leading-relaxed max-w-sm">
-              {BAKERY_INFO.tagline}. Every bake is prepared in small batches from our home kitchen with European butter and Belgian chocolate.
+              {BAKERY_INFO.tagline}. Handcrafted with love by Head Chef <strong className="text-white font-semibold">{BAKERY_INFO.chefName}</strong> in small batches with European butter and Belgian chocolate.
             </p>
 
             <div className="pt-2 flex items-center gap-3">
@@ -47,13 +47,14 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 <MessageCircle className="w-4 h-4" />
               </a>
               <a
-                href={`https://instagram.com/${BAKERY_INFO.instagram.replace('@', '')}`}
+                href={BAKERY_INFO.instagramUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-9 h-9 rounded-full bg-white/10 hover:bg-[#C86D51] flex items-center justify-center text-white transition-colors"
-                aria-label="Instagram"
+                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 hover:bg-[#C86D51] text-white text-xs font-semibold transition-colors"
+                aria-label="Instagram @jerrys_bakery"
               >
-                <Instagram className="w-4 h-4" />
+                <Instagram className="w-3.5 h-3.5" />
+                <span>@jerrys_bakery</span>
               </a>
               <a
                 href={`mailto:${BAKERY_INFO.email}`}
@@ -164,8 +165,8 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
 
         {/* Bottom copyright & credits */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#EADBCB]/70">
-          <p className="flex items-center gap-1">
-            &copy; {new Date().getFullYear()} Jerryyss Bakery. All rights reserved. Handcrafted with
+          <p className="flex items-center gap-1 flex-wrap">
+            &copy; {new Date().getFullYear()} Jerryyss Bakery. Head Chef <strong className="text-white font-medium">{BAKERY_INFO.chefName}</strong>. Handcrafted with
             <Heart className="w-3.5 h-3.5 fill-[#C86D51] text-[#C86D51] inline" /> for sweet celebrations.
           </p>
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import { ArrowRight, Sparkles, Heart, Clock, Star, Flame } from 'lucide-react';
 import heroCakeImg from '../assets/images/hero_chocolate_cake_1789897166412.jpg';
+import { FALLBACK_CAKE_IMAGE } from '../data/bakeryData';
 
 interface HeroProps {
   onOrderNowClick: () => void;
@@ -95,6 +96,7 @@ export const Hero: React.FC<HeroProps> = ({ onOrderNowClick, onExploreMenuClick 
                     src={heroCakeImg}
                     alt="Jerryyss Bakery Signature Belgian Chocolate Cake"
                     referrerPolicy="no-referrer"
+                    onError={(e) => { e.currentTarget.src = FALLBACK_CAKE_IMAGE; }}
                     className="w-full h-full object-cover object-center transform hover:scale-105 transition-transform duration-700 ease-out"
                   />
                   {/* Subtle gradient overlay at base */}

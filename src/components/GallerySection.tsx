@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Sparkles, Camera, X, ZoomIn } from 'lucide-react';
-import { GALLERY_ITEMS } from '../data/bakeryData';
+import { GALLERY_ITEMS, FALLBACK_CAKE_IMAGE } from '../data/bakeryData';
 import { GalleryItem } from '../types';
 
 export const GallerySection: React.FC = () => {
@@ -61,6 +61,7 @@ export const GallerySection: React.FC = () => {
                   src={item.image}
                   alt={item.title}
                   referrerPolicy="no-referrer"
+                  onError={(e) => { e.currentTarget.src = FALLBACK_CAKE_IMAGE; }}
                   loading="lazy"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
                 />
@@ -116,6 +117,7 @@ export const GallerySection: React.FC = () => {
                 src={selectedItem.image}
                 alt={selectedItem.title}
                 referrerPolicy="no-referrer"
+                onError={(e) => { e.currentTarget.src = FALLBACK_CAKE_IMAGE; }}
                 className="w-full h-full object-cover"
               />
             </div>

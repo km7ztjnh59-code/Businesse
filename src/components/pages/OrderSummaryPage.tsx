@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Trash2, Plus, Minus, ArrowLeft, ArrowRight, ShieldCheck, MapPin, Calendar, Clock, ShoppingBag, AlertCircle, Sparkles } from 'lucide-react';
+import { Trash2, Plus, Minus, ArrowLeft, ArrowRight, ShieldCheck, MapPin, Calendar, Clock, ShoppingBag, AlertCircle, Sparkles, MessageCircle } from 'lucide-react';
 import { CustomizedOrderItem, CustomerDetails } from '../../types';
-import { BAKERY_INFO } from '../../data/bakeryData';
+import { BAKERY_INFO, FALLBACK_CAKE_IMAGE } from '../../data/bakeryData';
+import { getPaidOrderWhatsAppUrl } from '../../utils/whatsapp';
 
 interface OrderSummaryPageProps {
   orderItems: CustomizedOrderItem[];
@@ -150,6 +151,8 @@ export const OrderSummaryPage: React.FC<OrderSummaryPageProps> = ({
                   <img
                     src={item.image}
                     alt={item.productName}
+                    referrerPolicy="no-referrer"
+                    onError={(e) => { e.currentTarget.src = FALLBACK_CAKE_IMAGE; }}
                     className="w-20 h-20 rounded-xl object-cover border border-[#EADBCB] shrink-0"
                   />
                   <div className="space-y-1">
@@ -312,7 +315,7 @@ export const OrderSummaryPage: React.FC<OrderSummaryPageProps> = ({
                     required
                     value={customerDetails.phone}
                     onChange={(e) => onUpdateCustomerDetails({ ...customerDetails, phone: e.target.value })}
-                    placeholder="e.g. +91 99878 26949"
+                    placeholder="e.g. +91 93725 07748"
                     className="w-full px-3 py-2 rounded-xl border border-[#EADBCB] text-xs text-[#231714] focus:outline-none focus:border-[#C86D51]"
                   />
                 </div>
@@ -444,6 +447,30 @@ export const OrderSummaryPage: React.FC<OrderSummaryPageProps> = ({
               >
                 <span>Proceed to Payment (₹{grandTotal.toLocaleString('en-IN')})</span>
                 <ArrowRight className="w-5 h-5 text-[#C86D51]" />
+              </button>
+
+              {/* Direct WhatsApp Order Summary Button */}
+              <button
+                type="button"
+                onClick={() => {
+                  const url = getPaidOrderWhatsAppUrl({
+                    orderId: `JB-${Math.floor(10000 + Math.random() * 90000)}`,
+                    items: orderItems,
+                    customer: customerDetails,
+                    subtotal,
+                    deliveryFee,
+                    total: grandTotal,
+                    paymentMethod: `UPI to ${BAKERY_INFO.whatsappNumber.replace(/[^0-9]/g, '').slice(-10)}`,
+                    paymentRef: "DIRECT_WHATSAPP_ORDER",
+                    paidAt: new Date().toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' }),
+                    status: 'confirmed',
+                  });
+                  window.open(url, '_blank');
+                }}
+                className="w-full py-3.5 rounded-full bg-[#2E7D32]/10 hover:bg-[#2E7D32]/20 text-[#2E7D32] border border-[#2E7D32]/30 font-semibold text-xs sm:text-sm transition-all flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <MessageCircle className="w-4 h-4" />
+                <span>Send Order Summary on WhatsApp ({BAKERY_INFO.displayPhone})</span>
               </button>
             </div>
           </form>

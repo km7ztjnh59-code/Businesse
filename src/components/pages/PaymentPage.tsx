@@ -18,8 +18,8 @@ import {
   AlertCircle
 } from 'lucide-react';
 import { CustomizedOrderItem, CustomerDetails, CompletedOrder } from '../../types';
-import { BAKERY_INFO } from '../../data/bakeryData';
-import { getPaidOrderWhatsAppUrl } from '../../utils/whatsapp';
+import { BAKERY_INFO, FALLBACK_CAKE_IMAGE } from '../../data/bakeryData';
+import { getPaidOrderWhatsAppUrl, getPaidOrderSummaryText } from '../../utils/whatsapp';
 
 interface PaymentPageProps {
   orderItems: CustomizedOrderItem[];
@@ -36,14 +36,15 @@ export const PaymentPage: React.FC<PaymentPageProps> = ({
 }) => {
   const [paymentMethod, setPaymentMethod] = useState<'upi' | 'card' | 'cod'>('upi');
   const [copiedField, setCopiedField] = useState<string | null>(null);
+  const [summaryCopied, setSummaryCopied] = useState(false);
   const [upiRefNumber, setUpiRefNumber] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
   const [completedOrder, setCompletedOrder] = useState<CompletedOrder | null>(null);
 
-  // Baker's recipient details
-  const RECIPIENT_PHONE = "9987826949";
-  const RECIPIENT_NAME = "Jerryyss Bakery";
-  const RECIPIENT_UPI = "9987826949@upi";
+  // Baker's recipient details (derived directly from BAKERY_INFO)
+  const RECIPIENT_PHONE = BAKERY_INFO.whatsappNumber.replace(/[^0-9]/g, '').slice(-10);
+  const RECIPIENT_NAME = BAKERY_INFO.name;
+  const RECIPIENT_UPI = `${RECIPIENT_PHONE}@upi`;
 
   // Subtotal & delivery fee
   const subtotal = orderItems.reduce((acc, curr) => acc + curr.unitPrice * curr.quantity, 0);
@@ -63,38 +64,55 @@ export const PaymentPage: React.FC<PaymentPageProps> = ({
     setTimeout(() => setCopiedField(null), 2500);
   };
 
-  // Process payment verification
+  const handleCopySummary = (order: CompletedOrder) => {
+    const text = getPaidOrderSummaryText(order);
+    navigator.clipboard.writeText(text);
+    setSummaryCopied(true);
+    setTimeout(() => setSummaryCopied(false), 2500);
+  };
+
+  // Process payment verification and automatically forward the order summary to WhatsApp
   const handleProcessPayment = () => {
     setIsProcessing(true);
 
+    const orderId = `JB-${Math.floor(10000 + Math.random() * 90000)}`;
+    const paymentRef = upiRefNumber.trim() 
+      ? `UPI-${upiRefNumber.trim()}`
+      : `TXN-${Math.random().toString(36).substring(2, 9).toUpperCase()}`;
+    const nowStr = new Date().toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' });
+
+    const newCompletedOrder: CompletedOrder = {
+      orderId,
+      items: [...orderItems],
+      customer: { ...customerDetails },
+      subtotal,
+      deliveryFee,
+      total: grandTotal,
+      paymentMethod:
+        paymentMethod === 'upi'
+          ? `UPI Direct to ${RECIPIENT_PHONE}`
+          : paymentMethod === 'card'
+          ? 'Credit / Debit Card'
+          : 'Cash on Delivery / Pickup',
+      paymentRef,
+      paidAt: nowStr,
+      status: 'confirmed',
+    };
+
+    // Formatted WhatsApp URL for the order summary
+    const whatsappUrl = getPaidOrderWhatsAppUrl(newCompletedOrder);
+
+    // Automatically trigger WhatsApp tab synchronously in response to the user's click action
+    try {
+      window.open(whatsappUrl, '_blank');
+    } catch (e) {
+      console.warn('Popup was blocked by the browser, accessible via the on-screen button:', e);
+    }
+
     setTimeout(() => {
-      const orderId = `JB-${Math.floor(10000 + Math.random() * 90000)}`;
-      const paymentRef = upiRefNumber.trim() 
-        ? `UPI-${upiRefNumber.trim()}`
-        : `TXN-${Math.random().toString(36).substring(2, 9).toUpperCase()}`;
-      const nowStr = new Date().toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' });
-
-      const newCompletedOrder: CompletedOrder = {
-        orderId,
-        items: [...orderItems],
-        customer: { ...customerDetails },
-        subtotal,
-        deliveryFee,
-        total: grandTotal,
-        paymentMethod:
-          paymentMethod === 'upi'
-            ? `UPI Direct to ${RECIPIENT_PHONE}`
-            : paymentMethod === 'card'
-            ? 'Credit / Debit Card'
-            : 'Cash on Delivery / Pickup',
-        paymentRef,
-        paidAt: nowStr,
-        status: 'confirmed',
-      };
-
       setCompletedOrder(newCompletedOrder);
       setIsProcessing(false);
-    }, 1200);
+    }, 600);
   };
 
   const handlePrint = () => {
@@ -110,25 +128,41 @@ export const PaymentPage: React.FC<PaymentPageProps> = ({
     return (
       <div className="max-w-4xl mx-auto px-4 sm:px-6 py-10 sm:py-16 space-y-8 animate-fade-in">
         {/* Celebration Header Card */}
-        <div className="bg-white rounded-3xl p-8 sm:p-12 border border-[#EADBCB] shadow-xl text-center space-y-4 relative overflow-hidden">
+        <div className="bg-white rounded-3xl p-8 sm:p-12 border border-[#EADBCB] shadow-xl text-center space-y-5 relative overflow-hidden">
           <div className="w-20 h-20 rounded-full bg-[#2E7D32]/10 text-[#2E7D32] flex items-center justify-center mx-auto shadow-inner">
             <CheckCircle2 className="w-12 h-12" />
           </div>
 
           <div className="space-y-1">
             <span className="text-xs font-bold uppercase tracking-widest text-[#2E7D32]">
-              Payment Transferred to {RECIPIENT_PHONE} • Order Confirmed
+              Order Confirmed • Direct to {RECIPIENT_PHONE}
             </span>
             <h1 className="font-serif text-3xl sm:text-4xl font-bold text-[#231714]">
               Thank You for Ordering, {completedOrder.customer.name}! 🎂
             </h1>
             <p className="text-sm sm:text-base text-[#5C4A3E] max-w-xl mx-auto">
-              Your payment of <strong className="text-[#231714]">₹{completedOrder.total.toLocaleString('en-IN')}</strong> to account <strong className="text-[#2E7D32]">{RECIPIENT_PHONE}</strong> has been logged. Our ovens are ready and we are preparing your fresh treats as scheduled!
+              Your order <strong className="text-[#C86D51] font-mono font-bold">#{completedOrder.orderId}</strong> for <strong className="text-[#231714]">₹{completedOrder.total.toLocaleString('en-IN')}</strong> has been confirmed. Chef <strong className="text-[#231714]">{BAKERY_INFO.chefName}</strong> is preparing your fresh treats as scheduled!
             </p>
           </div>
 
+          {/* WhatsApp Sent Status Box */}
+          <div className="bg-[#E8F5E9] border border-[#A5D6A7] rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row items-center gap-3 text-left max-w-xl mx-auto">
+            <div className="w-10 h-10 rounded-full bg-[#2E7D32] text-white flex items-center justify-center shrink-0 shadow-sm">
+              <MessageCircle className="w-5 h-5 fill-white/20" />
+            </div>
+            <div className="flex-1 space-y-0.5 text-center sm:text-left">
+              <h4 className="text-xs sm:text-sm font-bold text-[#1B5E20] flex items-center justify-center sm:justify-start gap-1.5">
+                <CheckCircle2 className="w-4 h-4 text-[#2E7D32]" />
+                <span>Order Summary Sent to WhatsApp (+91 {RECIPIENT_PHONE})</span>
+              </h4>
+              <p className="text-[11px] sm:text-xs text-[#2E7D32]/90">
+                Your full itemized bill, delivery schedule, and payment details have been prepared for Chef {BAKERY_INFO.chefName}.
+              </p>
+            </div>
+          </div>
+
           {/* Quick Info Badges */}
-          <div className="flex flex-wrap items-center justify-center gap-3 pt-2 text-xs font-semibold">
+          <div className="flex flex-wrap items-center justify-center gap-3 pt-1 text-xs font-semibold">
             <span className="bg-[#FAF7F2] px-3.5 py-1.5 rounded-full border border-[#EADBCB] text-[#3E2723]">
               Order ID: <strong className="text-[#C86D51] font-mono">{completedOrder.orderId}</strong>
             </span>
@@ -140,8 +174,8 @@ export const PaymentPage: React.FC<PaymentPageProps> = ({
             </span>
           </div>
 
-          {/* WhatsApp Direct Action Button */}
-          <div className="pt-4 max-w-md mx-auto space-y-2">
+          {/* WhatsApp Direct Action Buttons */}
+          <div className="pt-3 max-w-md mx-auto space-y-2.5">
             <a
               id="btn-send-whatsapp-confirmation"
               href={whatsappUrl}
@@ -150,10 +184,38 @@ export const PaymentPage: React.FC<PaymentPageProps> = ({
               className="w-full py-4 px-6 rounded-full bg-[#2E7D32] hover:bg-[#256628] text-white font-semibold text-sm sm:text-base shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2.5 cursor-pointer transform hover:-translate-y-0.5"
             >
               <MessageCircle className="w-5 h-5 fill-white/20" />
-              <span>Send Receipt / Screenshot on WhatsApp ({RECIPIENT_PHONE})</span>
+              <span>Open WhatsApp with Order Summary (+91 {RECIPIENT_PHONE})</span>
             </a>
+
+            <div className="flex items-center justify-center gap-2">
+              <button
+                onClick={() => handleCopySummary(completedOrder)}
+                className="px-4 py-2 rounded-full bg-[#FAF7F2] hover:bg-[#EADBCB] text-[#3E2723] text-xs font-semibold border border-[#D6C4B0] inline-flex items-center gap-1.5 cursor-pointer transition-colors"
+              >
+                {summaryCopied ? (
+                  <>
+                    <Check className="w-3.5 h-3.5 text-[#2E7D32]" />
+                    <span className="text-[#2E7D32]">Order Summary Copied!</span>
+                  </>
+                ) : (
+                  <>
+                    <Copy className="w-3.5 h-3.5" />
+                    <span>Copy Summary Text</span>
+                  </>
+                )}
+              </button>
+
+              <button
+                onClick={handlePrint}
+                className="px-4 py-2 rounded-full bg-[#FAF7F2] hover:bg-[#EADBCB] text-[#3E2723] text-xs font-semibold border border-[#D6C4B0] inline-flex items-center gap-1.5 cursor-pointer transition-colors"
+              >
+                <Printer className="w-3.5 h-3.5" />
+                <span>Print Receipt</span>
+              </button>
+            </div>
+
             <p className="text-[11px] text-[#7D6658]">
-              Connect directly with our head baker at <strong>+91 {RECIPIENT_PHONE}</strong> to share your payment screenshot or track delivery.
+              Chef <strong>{BAKERY_INFO.chefName}</strong> will acknowledge your order on WhatsApp at <strong>+91 {RECIPIENT_PHONE}</strong>.
             </p>
           </div>
         </div>
@@ -223,6 +285,8 @@ export const PaymentPage: React.FC<PaymentPageProps> = ({
                   <img
                     src={item.image}
                     alt={item.productName}
+                    referrerPolicy="no-referrer"
+                    onError={(e) => { e.currentTarget.src = FALLBACK_CAKE_IMAGE; }}
                     className="w-12 h-12 rounded-xl object-cover"
                   />
                   <div>
@@ -283,7 +347,7 @@ export const PaymentPage: React.FC<PaymentPageProps> = ({
   }
 
   // -------------------------------------------------------------
-  // PAYMENT STEP (Customer makes payment directly to 9987826949)
+  // PAYMENT STEP (Customer makes payment directly to Baker)
   // -------------------------------------------------------------
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-8">
@@ -310,7 +374,7 @@ export const PaymentPage: React.FC<PaymentPageProps> = ({
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
-        {/* LEFT: PAYMENT OPTIONS & DIRECT UPI TO 9987826949 */}
+        {/* LEFT: PAYMENT OPTIONS & DIRECT UPI */}
         <div className="md:col-span-7 space-y-6">
           {/* Direct Pay to Phone Number Box (Hero Card) */}
           <div className="bg-[#FAF7F2] rounded-3xl p-5 sm:p-6 border-2 border-[#2E7D32]/40 shadow-sm space-y-4">
@@ -430,6 +494,7 @@ export const PaymentPage: React.FC<PaymentPageProps> = ({
                 <img
                   src={qrCodeUrl}
                   alt={`UPI QR code to pay ₹${grandTotal} to ${RECIPIENT_PHONE}`}
+                  referrerPolicy="no-referrer"
                   className="w-44 h-44 mx-auto rounded-lg"
                 />
               </div>
@@ -581,20 +646,23 @@ export const PaymentPage: React.FC<PaymentPageProps> = ({
               id="btn-confirm-payment-complete"
               onClick={handleProcessPayment}
               disabled={isProcessing}
-              className="w-full py-4 rounded-full bg-[#2E7D32] hover:bg-[#256628] text-white font-semibold text-sm sm:text-base shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-75"
+              className="w-full py-4 rounded-full bg-[#2E7D32] hover:bg-[#256628] text-white font-semibold text-sm sm:text-base shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2.5 cursor-pointer disabled:opacity-75"
             >
               {isProcessing ? (
                 <>
                   <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                  <span>Verifying Payment with {RECIPIENT_PHONE}...</span>
+                  <span>Processing & Opening WhatsApp (+91 {RECIPIENT_PHONE})...</span>
                 </>
               ) : (
                 <>
-                  <CheckCircle2 className="w-5 h-5 text-white" />
-                  <span>I Have Paid ₹{grandTotal.toLocaleString('en-IN')} to {RECIPIENT_PHONE}</span>
+                  <MessageCircle className="w-5 h-5 fill-white/20" />
+                  <span>Place Order & Send Summary on WhatsApp</span>
                 </>
               )}
             </button>
+            <span className="text-[11px] text-center text-[#7D6658] block">
+              Instantly sends full receipt to Chef {BAKERY_INFO.chefName} at <strong>+91 {RECIPIENT_PHONE}</strong>
+            </span>
 
             <div className="text-center pt-1">
               <a

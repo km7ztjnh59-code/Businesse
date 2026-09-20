@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Sparkles, Plus, Eye, Check, Clock, Users, MessageCircle } from 'lucide-react';
 import { MenuItem, CategoryType } from '../types';
-import { MENU_ITEMS } from '../data/bakeryData';
+import { MENU_ITEMS, FALLBACK_CAKE_IMAGE } from '../data/bakeryData';
 import { getSingleItemWhatsAppUrl } from '../utils/whatsapp';
 
 interface MenuSectionProps {
@@ -112,6 +112,7 @@ export const MenuSection: React.FC<MenuSectionProps> = ({
                     src={item.image}
                     alt={item.name}
                     referrerPolicy="no-referrer"
+                    onError={(e) => { e.currentTarget.src = FALLBACK_CAKE_IMAGE; }}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
                     loading="lazy"
                   />

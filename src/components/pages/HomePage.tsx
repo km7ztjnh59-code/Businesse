@@ -1,6 +1,6 @@
 import React from 'react';
-import { ArrowRight, Sparkles, Heart, Clock, Award, ShieldCheck, MessageCircle, Star } from 'lucide-react';
-import { BAKERY_INFO, TESTIMONIALS, GALLERY_ITEMS } from '../../data/bakeryData';
+import { ArrowRight, Sparkles, Heart, Clock, Award, ShieldCheck, MessageCircle, Star, Instagram } from 'lucide-react';
+import { BAKERY_INFO, TESTIMONIALS, GALLERY_ITEMS, FALLBACK_CAKE_IMAGE } from '../../data/bakeryData';
 import { getGeneralWhatsAppUrl } from '../../utils/whatsapp';
 
 interface HomePageProps {
@@ -17,9 +17,14 @@ export const HomePage: React.FC<HomePageProps> = ({ onProceedToMenu }) => {
             {/* Left Content */}
             <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
               {/* Brand Tagline Badge */}
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#EADBCB]/60 border border-[#D6C4B0] text-xs font-semibold tracking-wide text-[#5C4A3E]">
-                <Sparkles className="w-3.5 h-3.5 text-[#C86D51]" />
-                <span>{BAKERY_INFO.tagline}</span>
+              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-2.5">
+                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#EADBCB]/60 border border-[#D6C4B0] text-xs font-semibold tracking-wide text-[#5C4A3E]">
+                  <Sparkles className="w-3.5 h-3.5 text-[#C86D51]" />
+                  <span>{BAKERY_INFO.tagline}</span>
+                </div>
+                <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#3E2723] text-[#FAF7F2] text-xs font-semibold tracking-wide shadow-2xs">
+                  <span>Chef: {BAKERY_INFO.chefName}</span>
+                </div>
               </div>
 
               {/* Major Heading */}
@@ -34,7 +39,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onProceedToMenu }) => {
 
               {/* Supporting Text */}
               <p className="text-base sm:text-lg text-[#5C4A3E] max-w-xl mx-auto lg:mx-0 font-normal leading-relaxed">
-                Freshly baked cakes, brownies, cupcakes, and desserts made to order for birthdays, celebrations, and everyday cravings. Prepared in our home kitchen with real butter, Belgian chocolate, and pure passion.
+                Freshly baked cakes, brownies, cupcakes, and desserts made to order by Head Chef <strong className="text-[#231714] font-semibold">{BAKERY_INFO.chefName}</strong>. Prepared in our home kitchen with real butter, Belgian chocolate, and pure passion.
               </p>
 
               {/* Trust Points */}
@@ -54,7 +59,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onProceedToMenu }) => {
               </div>
 
               {/* PRIMARY CALL TO ACTION BUTTON REQUESTED BY USER */}
-              <div className="pt-4 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3.5">
+              <div className="pt-4 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3.5 flex-wrap">
                 <button
                   id="btn-check-menu-order"
                   onClick={onProceedToMenu}
@@ -65,13 +70,23 @@ export const HomePage: React.FC<HomePageProps> = ({ onProceedToMenu }) => {
                 </button>
 
                 <a
+                  href={BAKERY_INFO.instagramUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full sm:w-auto px-5 py-4 rounded-full bg-white hover:bg-[#F3ECE2] text-[#231714] font-semibold text-sm border border-[#EADBCB] shadow-2xs transition-all flex items-center justify-center gap-2 cursor-pointer group"
+                >
+                  <Instagram className="w-4 h-4 text-[#C86D51] group-hover:scale-110 transition-transform" />
+                  <span>@jerrys_bakery</span>
+                </a>
+
+                <a
                   href={getGeneralWhatsAppUrl()}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full sm:w-auto px-6 py-4 rounded-full bg-white hover:bg-[#F3ECE2] text-[#231714] font-semibold text-sm border border-[#EADBCB] shadow-2xs transition-all flex items-center justify-center gap-2 cursor-pointer"
+                  className="w-full sm:w-auto px-5 py-4 rounded-full bg-white hover:bg-[#F3ECE2] text-[#231714] font-semibold text-sm border border-[#EADBCB] shadow-2xs transition-all flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <MessageCircle className="w-4 h-4 text-[#2E7D32]" />
-                  <span>Chat with Baker: {BAKERY_INFO.displayPhone}</span>
+                  <span>Chat: {BAKERY_INFO.displayPhone}</span>
                 </a>
               </div>
             </div>
@@ -86,6 +101,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onProceedToMenu }) => {
                   <img
                     src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=1000&q=85"
                     alt="Jerryyss Bakery Signature Belgian Chocolate Drip Cake"
+                    referrerPolicy="no-referrer"
+                    onError={(e) => { e.currentTarget.src = FALLBACK_CAKE_IMAGE; }}
                     className="w-full h-[380px] sm:h-[440px] object-cover hover:scale-105 transition-transform duration-700"
                   />
                   
@@ -122,6 +139,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onProceedToMenu }) => {
                 <img
                   src="https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=800&q=80"
                   alt="Jerryyss Bakery Home Bakehouse"
+                  referrerPolicy="no-referrer"
+                  onError={(e) => { e.currentTarget.src = FALLBACK_CAKE_IMAGE; }}
                   className="w-full h-80 object-cover"
                 />
               </div>
@@ -132,23 +151,28 @@ export const HomePage: React.FC<HomePageProps> = ({ onProceedToMenu }) => {
             </div>
 
             <div className="lg:col-span-7 space-y-4 order-1 lg:order-2">
-              <span className="text-xs font-bold uppercase tracking-widest text-[#C86D51]">
-                Our Bakery Story
-              </span>
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-bold uppercase tracking-widest text-[#C86D51]">
+                  Our Bakery Story
+                </span>
+                <span className="text-xs px-2.5 py-0.5 rounded-full bg-[#EADBCB] text-[#3E2723] font-semibold">
+                  Chef {BAKERY_INFO.chefName}
+                </span>
+              </div>
               <h2 className="font-serif text-3xl sm:text-4xl font-bold text-[#231714]">
-                Made at home, made for you.
+                Handcrafted by Chef {BAKERY_INFO.chefName}
               </h2>
               <p className="text-[#5C4A3E] leading-relaxed text-base sm:text-lg">
-                Jerryyss Bakery is a homemade bakery focused on fresh, affordable and beautifully made treats. Every order is prepared with care and can be personalized for your special moments.
+                Jerryyss Bakery is an artisanal homemade bakery founded and curated by Head Chef <strong className="text-[#231714] font-semibold">{BAKERY_INFO.chefName}</strong>. Focused on fresh, affordable, and exquisitely crafted bakes, every cake, brownie, and cupcake is prepared from scratch with heartfelt dedication.
               </p>
               <p className="text-[#5C4A3E] text-sm leading-relaxed">
-                Unlike commercial retail bakeries that keep cakes sitting in display chillers for days, we bake only after you place an order. From choosing custom weights to selecting delicate piping and handwritten messages, our treats make every birthday, milestone, or quiet tea time memorable.
+                Unlike commercial bakeries that keep cakes chilled in display cases for days, Chef {BAKERY_INFO.chefName} bakes each order fresh on the day of delivery. From selecting exact cake weights to crafting delicate Korean piping and handwritten messages, every creation is made to make your celebration truly unforgettable.
               </p>
 
               <div className="pt-2 flex flex-wrap gap-6 text-sm text-[#3E2723] font-medium">
                 <div className="flex items-center gap-2">
                   <Award className="w-4 h-4 text-[#C86D51]" />
-                  <span>Real European Butter & Cream</span>
+                  <span>Pure European Butter & Belgian Cocoa</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <ShieldCheck className="w-4 h-4 text-[#C86D51]" />
@@ -156,11 +180,11 @@ export const HomePage: React.FC<HomePageProps> = ({ onProceedToMenu }) => {
                 </div>
                 <div className="flex items-center gap-2">
                   <Clock className="w-4 h-4 text-[#C86D51]" />
-                  <span>Baked & Delivered Same Day</span>
+                  <span>Freshly Baked Daily to Order</span>
                 </div>
               </div>
 
-              <div className="pt-4">
+              <div className="pt-4 flex items-center gap-4 flex-wrap">
                 <button
                   onClick={onProceedToMenu}
                   className="inline-flex items-center gap-2 font-serif font-bold text-[#3E2723] hover:text-[#C86D51] transition-colors cursor-pointer group"
@@ -168,6 +192,16 @@ export const HomePage: React.FC<HomePageProps> = ({ onProceedToMenu }) => {
                   <span>Explore All Flavors & Weight Options</span>
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </button>
+
+                <a
+                  href={BAKERY_INFO.instagramUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#C86D51] hover:text-[#3E2723] transition-colors"
+                >
+                  <Instagram className="w-3.5 h-3.5" />
+                  <span>View Chef {BAKERY_INFO.chefName}'s work on Instagram</span>
+                </a>
               </div>
             </div>
           </div>
@@ -302,6 +336,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onProceedToMenu }) => {
               <img
                 src={g.image}
                 alt={g.title}
+                referrerPolicy="no-referrer"
+                onError={(e) => { e.currentTarget.src = FALLBACK_CAKE_IMAGE; }}
                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3">
@@ -309,6 +345,38 @@ export const HomePage: React.FC<HomePageProps> = ({ onProceedToMenu }) => {
               </div>
             </div>
           ))}
+        </div>
+
+        {/* Instagram Follow Card */}
+        <div className="mt-8 bg-white rounded-3xl p-6 sm:p-8 border border-[#EADBCB] shadow-sm flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left">
+          <div className="flex flex-col sm:flex-row items-center gap-4">
+            <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-[#FFD600] via-[#FF0169] to-[#D300C5] p-0.5 shadow-md shrink-0">
+              <div className="w-full h-full bg-white rounded-[14px] flex items-center justify-center text-[#C86D51]">
+                <Instagram className="w-7 h-7" />
+              </div>
+            </div>
+            <div>
+              <span className="text-xs font-bold uppercase tracking-wider text-[#C86D51] block">
+                Follow On Instagram
+              </span>
+              <h3 className="font-serif text-xl sm:text-2xl font-bold text-[#231714]">
+                @jerrys_bakery
+              </h3>
+              <p className="text-xs text-[#7D6658] mt-0.5">
+                Watch behind-the-scenes cake decorating and daily oven bakes by Head Chef <strong>{BAKERY_INFO.chefName}</strong>.
+              </p>
+            </div>
+          </div>
+
+          <a
+            href={BAKERY_INFO.instagramUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-6 py-3.5 rounded-full bg-[#3E2723] hover:bg-[#231714] text-[#FAF7F2] font-semibold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center gap-2 cursor-pointer shrink-0 group"
+          >
+            <Instagram className="w-4 h-4 text-[#C86D51] group-hover:scale-110 transition-transform" />
+            <span>Follow @jerrys_bakery</span>
+          </a>
         </div>
       </section>
     </div>

@@ -147,7 +147,7 @@ export default function App() {
         }
       }} />
 
-      {/* Persistent Floating WhatsApp widget to 9987826949 */}
+      {/* Persistent Floating WhatsApp widget */}
       <FloatingWhatsApp />
     </div>
   );

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Heart, Sparkles, Award, ShieldCheck, CheckCircle2 } from 'lucide-react';
 import bakerImg from '../assets/images/baker_decorating_cake_1789897181285.jpg';
+import { FALLBACK_CAKE_IMAGE } from '../data/bakeryData';
 
 export const OurStory: React.FC = () => {
   return (
@@ -24,6 +25,7 @@ export const OurStory: React.FC = () => {
                     src={bakerImg}
                     alt="Jerryyss Bakery passionate artisan home baker decorating cake"
                     referrerPolicy="no-referrer"
+                    onError={(e) => { e.currentTarget.src = FALLBACK_CAKE_IMAGE; }}
                     className="w-full h-full object-cover"
                   />
                 </div>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { X, Check, Plus, Minus, MessageCircle, Clock, Users, ShieldCheck, Heart } from 'lucide-react';
 import { MenuItem } from '../types';
+import { FALLBACK_CAKE_IMAGE } from '../data/bakeryData';
 import { getSingleItemWhatsAppUrl } from '../utils/whatsapp';
 
 interface ItemModalProps {
@@ -52,6 +53,7 @@ export const ItemModal: React.FC<ItemModalProps> = ({ item, onClose, onAddToCart
             src={item.image}
             alt={item.name}
             referrerPolicy="no-referrer"
+            onError={(e) => { e.currentTarget.src = FALLBACK_CAKE_IMAGE; }}
             className="w-full h-full object-cover"
           />
           <div className="absolute bottom-3 left-4 bg-[#3E2723] text-white px-3.5 py-1 rounded-full font-serif font-bold text-sm shadow-sm">

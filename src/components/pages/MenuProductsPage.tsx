@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Sparkles, Check, Plus, Minus, Heart, ShoppingBag, ArrowRight, ArrowLeft, SlidersHorizontal, AlertCircle } from 'lucide-react';
 import { MenuItem, CategoryType, WeightOption, CustomizedOrderItem } from '../../types';
-import { MENU_ITEMS, DECORATION_STYLES } from '../../data/bakeryData';
+import { MENU_ITEMS, DECORATION_STYLES, FALLBACK_CAKE_IMAGE } from '../../data/bakeryData';
 
 interface MenuProductsPageProps {
   orderItems: CustomizedOrderItem[];
@@ -185,6 +185,8 @@ export const MenuProductsPage: React.FC<MenuProductsPageProps> = ({
                 <img
                   src={item.image}
                   alt={item.name}
+                  referrerPolicy="no-referrer"
+                  onError={(e) => { e.currentTarget.src = FALLBACK_CAKE_IMAGE; }}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
                 
@@ -316,6 +318,8 @@ export const MenuProductsPage: React.FC<MenuProductsPageProps> = ({
                 <img
                   src={activeCustomizingItem.image}
                   alt={activeCustomizingItem.name}
+                  referrerPolicy="no-referrer"
+                  onError={(e) => { e.currentTarget.src = FALLBACK_CAKE_IMAGE; }}
                   className="w-16 h-16 rounded-xl object-cover"
                 />
                 <div className="flex-grow">

@@ -1,5 +1,5 @@
 import React from 'react';
-import { ShoppingBag, MessageCircle, ArrowLeft, Cake, Sparkles } from 'lucide-react';
+import { ShoppingBag, MessageCircle, ArrowLeft, Cake, Sparkles, Instagram } from 'lucide-react';
 import { PageType, CustomizedOrderItem } from '../types';
 import { BAKERY_INFO } from '../data/bakeryData';
 import { getGeneralWhatsAppUrl } from '../utils/whatsapp';
@@ -30,7 +30,7 @@ export const StepNavbar: React.FC<StepNavbarProps> = ({
       {/* Top micro announcement bar */}
       <div className="bg-[#3E2723] text-[#FAF7F2] text-[11px] sm:text-xs py-1.5 px-4 text-center tracking-wide font-medium flex items-center justify-center gap-2">
         <Sparkles className="w-3.5 h-3.5 text-[#C86D51]" />
-        <span>Freshly baked daily • Free delivery above ₹800 • Direct WhatsApp: <strong>{BAKERY_INFO.displayPhone}</strong></span>
+        <span>Head Chef: <strong className="text-white">{BAKERY_INFO.chefName}</strong> • Freshly baked daily • Free delivery above ₹800 • WhatsApp: <strong>{BAKERY_INFO.displayPhone}</strong></span>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between gap-4">
@@ -47,7 +47,7 @@ export const StepNavbar: React.FC<StepNavbarProps> = ({
               Jerryyss Bakery
             </span>
             <span className="font-sans text-[10px] sm:text-[11px] uppercase tracking-widest text-[#7D6658] font-semibold">
-              Fresh Homemade Treats
+              By Chef {BAKERY_INFO.chefName}
             </span>
           </div>
         </button>
@@ -89,6 +89,19 @@ export const StepNavbar: React.FC<StepNavbarProps> = ({
 
         {/* Right side actions */}
         <div className="flex items-center gap-2 sm:gap-3">
+          {/* Instagram Link */}
+          <a
+            href={BAKERY_INFO.instagramUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1.5 px-3 py-2 rounded-full bg-white hover:bg-[#F3ECE2] text-[#231714] text-xs font-semibold border border-[#EADBCB] shadow-2xs transition-all group"
+            aria-label="Instagram @jerrys_bakery"
+            title="Follow @jerrys_bakery on Instagram"
+          >
+            <Instagram className="w-4 h-4 text-[#C86D51] group-hover:scale-110 transition-transform" />
+            <span className="hidden lg:inline">@jerrys_bakery</span>
+          </a>
+
           {/* Order summary / Cart trigger */}
           {currentPage !== 'summary' && currentPage !== 'payment' && (
             <button
