@@ -51,10 +51,10 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 hover:bg-[#C86D51] text-white text-xs font-semibold transition-colors"
-                aria-label="Instagram @jerrys_bakery"
+                aria-label={`Instagram ${BAKERY_INFO.instagram}`}
               >
                 <Instagram className="w-3.5 h-3.5" />
-                <span>@jerrys_bakery</span>
+                <span>{BAKERY_INFO.instagram}</span>
               </a>
               <a
                 href={`mailto:${BAKERY_INFO.email}`}

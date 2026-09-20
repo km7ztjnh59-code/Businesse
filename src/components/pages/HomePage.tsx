@@ -76,7 +76,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onProceedToMenu }) => {
                   className="w-full sm:w-auto px-5 py-4 rounded-full bg-white hover:bg-[#F3ECE2] text-[#231714] font-semibold text-sm border border-[#EADBCB] shadow-2xs transition-all flex items-center justify-center gap-2 cursor-pointer group"
                 >
                   <Instagram className="w-4 h-4 text-[#C86D51] group-hover:scale-110 transition-transform" />
-                  <span>@jerrys_bakery</span>
+                  <span>{BAKERY_INFO.instagram}</span>
                 </a>
 
                 <a
@@ -360,7 +360,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onProceedToMenu }) => {
                 Follow On Instagram
               </span>
               <h3 className="font-serif text-xl sm:text-2xl font-bold text-[#231714]">
-                @jerrys_bakery
+                {BAKERY_INFO.instagram}
               </h3>
               <p className="text-xs text-[#7D6658] mt-0.5">
                 Watch behind-the-scenes cake decorating and daily oven bakes by Head Chef <strong>{BAKERY_INFO.chefName}</strong>.
@@ -375,7 +375,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onProceedToMenu }) => {
             className="px-6 py-3.5 rounded-full bg-[#3E2723] hover:bg-[#231714] text-[#FAF7F2] font-semibold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center gap-2 cursor-pointer shrink-0 group"
           >
             <Instagram className="w-4 h-4 text-[#C86D51] group-hover:scale-110 transition-transform" />
-            <span>Follow @jerrys_bakery</span>
+            <span>Follow {BAKERY_INFO.instagram}</span>
           </a>
         </div>
       </section>

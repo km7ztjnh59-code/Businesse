@@ -95,11 +95,11 @@ export const StepNavbar: React.FC<StepNavbarProps> = ({
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-1.5 px-3 py-2 rounded-full bg-white hover:bg-[#F3ECE2] text-[#231714] text-xs font-semibold border border-[#EADBCB] shadow-2xs transition-all group"
-            aria-label="Instagram @jerrys_bakery"
-            title="Follow @jerrys_bakery on Instagram"
+            aria-label={`Instagram ${BAKERY_INFO.instagram}`}
+            title={`Follow ${BAKERY_INFO.instagram} on Instagram`}
           >
             <Instagram className="w-4 h-4 text-[#C86D51] group-hover:scale-110 transition-transform" />
-            <span className="hidden lg:inline">@jerrys_bakery</span>
+            <span className="hidden lg:inline">{BAKERY_INFO.instagram}</span>
           </a>
 
           {/* Order summary / Cart trigger */}
