@@ -165,14 +165,20 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
 
         {/* Bottom copyright & credits */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#EADBCB]/70">
-          <p className="flex items-center gap-1 flex-wrap">
-            &copy; {new Date().getFullYear()} Jerryyss Bakery. Head Chef <strong className="text-white font-medium">{BAKERY_INFO.chefName}</strong>. Handcrafted with
-            <Heart className="w-3.5 h-3.5 fill-[#C86D51] text-[#C86D51] inline" /> for sweet celebrations.
-          </p>
+          <div className="flex flex-col sm:flex-row items-center sm:items-start gap-1 sm:gap-3 text-center sm:text-left flex-wrap">
+            <p className="flex items-center gap-1 flex-wrap justify-center sm:justify-start">
+              &copy; {new Date().getFullYear()} Jerryyss Bakery. Head Chef <strong className="text-white font-medium">{BAKERY_INFO.chefName}</strong>. Handcrafted with
+              <Heart className="w-3.5 h-3.5 fill-[#C86D51] text-[#C86D51] inline" /> for sweet celebrations.
+            </p>
+            <span className="hidden sm:inline text-[#EADBCB]/40">•</span>
+            <p className="text-[#EADBCB]/85">
+              Built by <strong className="text-white font-medium">{BAKERY_INFO.creatorName}</strong>
+            </p>
+          </div>
 
           <button
             onClick={scrollToTop}
-            className="flex items-center gap-1.5 text-xs text-[#EADBCB] hover:text-white transition-colors cursor-pointer"
+            className="flex items-center gap-1.5 text-xs text-[#EADBCB] hover:text-white transition-colors cursor-pointer shrink-0"
           >
             <span>Back to top</span>
             <ArrowUp className="w-3.5 h-3.5" />

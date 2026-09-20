@@ -5,6 +5,7 @@ export const BAKERY_INFO = {
   tagline: "Fresh-baked, made-to-order treats — baked daily, delivered locally",
   motto: "Little treats. Big happiness.",
   chefName: "KHAN NOOR",
+  creatorName: "Anas Malik",
   whatsappNumber: "+919372507748",
   displayPhone: "+91 93725 07748",
   email: "hello@jerryyssbakery.com",
