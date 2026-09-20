@@ -1,0 +1,30 @@
+@import "tailwindcss";
+
+@theme {
+  --font-serif: "Playfair Display", Georgia, Cambria, serif;
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-script: "Caveat", cursive;
+
+  --color-bakery-cream: #FAF7F2;
+  --color-bakery-sand: #F3ECE2;
+  --color-bakery-beige: #EADBCB;
+  --color-bakery-choc: #3E2723;
+  --color-bakery-dark: #231714;
+  --color-bakery-terracotta: #C86D51;
+  --color-bakery-terracotta-hover: #B55C41;
+  --color-bakery-caramel: #D98242;
+}
+
+@layer base {
+  body {
+    font-family: var(--font-sans);
+    background-color: #FAF7F2;
+    color: #231714;
+  }
+  h1, h2, h3, h4, .font-serif {
+    font-family: var(--font-serif);
+  }
+  .font-script {
+    font-family: var(--font-script);
+  }
+}

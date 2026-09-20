@@ -1,0 +1,6 @@
+{
+  "name": "Jerryyss Bakery",
+  "description": "Fresh-baked, made-to-order treats — baked daily, delivered locally. Artisanal cakes, fudgy brownies, custom celebration bakes, and cupcakes.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
