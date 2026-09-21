@@ -107,3 +107,13 @@ export interface FAQ {
   answer: string;
   category: 'ordering' | 'ingredients' | 'delivery';
 }
+
+export interface TeamMember {
+  id: string;
+  name: string;
+  role: string;
+  initials: string;
+  department: string;
+  bio: string;
+  responsibilities: string[];
+}

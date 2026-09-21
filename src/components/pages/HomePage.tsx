@@ -2,6 +2,7 @@ import React from 'react';
 import { ArrowRight, Sparkles, Heart, Clock, Award, ShieldCheck, MessageCircle, Star, Instagram } from 'lucide-react';
 import { BAKERY_INFO, TESTIMONIALS, GALLERY_ITEMS, FALLBACK_CAKE_IMAGE } from '../../data/bakeryData';
 import { getGeneralWhatsAppUrl } from '../../utils/whatsapp';
+import { MeetTheTeam } from '../MeetTheTeam';
 
 interface HomePageProps {
   onProceedToMenu: () => void;
@@ -208,7 +209,10 @@ export const HomePage: React.FC<HomePageProps> = ({ onProceedToMenu }) => {
         </div>
       </section>
 
-      {/* 3. Simple 4-Step Order Journey */}
+      {/* 3. Meet the Team Section */}
+      <MeetTheTeam onOrderClick={onProceedToMenu} />
+
+      {/* 4. Simple 4-Step Order Journey */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-2xl mx-auto mb-10 space-y-2">
           <span className="text-xs font-bold uppercase tracking-widest text-[#C86D51]">

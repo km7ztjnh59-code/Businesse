@@ -1,4 +1,4 @@
-import { MenuItem, Testimonial, GalleryItem, FAQ, WeightOption } from '../types';
+import { MenuItem, Testimonial, GalleryItem, FAQ, WeightOption, TeamMember } from '../types';
 
 export const BAKERY_INFO = {
   name: "Jerryyss Bakery",
@@ -319,4 +319,63 @@ export const CAKE_STYLES = [
   { id: 'chocolate-drip', name: 'Signature Chocolate Drip', desc: 'Glossy ganache drip with chocolate curl crowns & fresh berries' },
   { id: 'vintage-piped', name: 'Vintage Lambeth Piped', desc: 'Elaborate frilled royal buttercream piping and delicate bows' },
   { id: 'rustic-naked', name: 'Rustic Semi-Naked', desc: 'Exposed sponge edges garnished with seasonal edible flowers' }
+];
+
+export const TEAM_MEMBERS: TeamMember[] = [
+  {
+    id: 'noor',
+    name: 'Noor',
+    role: 'Head Baker & Cake Artist',
+    initials: 'N',
+    department: 'Culinary & Cake Artistry',
+    bio: 'Leads our artisanal baking craft, delicate Korean piping, gourmet Belgian chocolate ganache preparations, and custom celebration cake designs.',
+    responsibilities: [
+      'Artisanal Cake Design & Decorating',
+      'Custom Korean & Lambeth Piping',
+      '100% Eggless Sponge Formulations',
+      'Daily Oven Bakes & Kitchen Standards'
+    ]
+  },
+  {
+    id: 'anas',
+    name: 'Anas',
+    role: 'Business & Digital Manager',
+    initials: 'A',
+    department: 'Business & Digital Growth',
+    bio: 'Oversees digital storefront technology, user experience, brand communication, and the seamless online ordering ecosystem for every customer.',
+    responsibilities: [
+      'Digital Storefront & Tech Stack',
+      'Brand Strategy & Customer Journey',
+      'Digital Growth & Order Inquiries',
+      'Seamless Checkout & Support'
+    ]
+  },
+  {
+    id: 'ayan',
+    name: 'Ayan',
+    role: 'Operations & Procurement',
+    initials: 'Ay',
+    department: 'Operations & Logistics',
+    bio: 'Directs pure dairy and Belgian cocoa sourcing, inventory quality control, eco-friendly food-grade packaging, and timely local neighborhood deliveries.',
+    responsibilities: [
+      'Pure Ingredient Sourcing & Quality',
+      'Supply Chain & Stock Control',
+      'Food-Safe Packaging Integrity',
+      'Dispatch Timelines & Local Delivery'
+    ]
+  },
+  {
+    id: 'anam',
+    name: 'Anam',
+    role: 'Administration & Planning',
+    initials: 'An',
+    department: 'Administration & Planning',
+    bio: 'Manages custom cake calendar scheduling, customer consultation briefs, celebration deadlines, and daily kitchen workflow planning.',
+    responsibilities: [
+      'Bakehouse Calendar & Scheduling',
+      'Celebration Timing Coordination',
+      'Customer Consultation & Requests',
+      'Kitchen Order Management'
+    ]
+  }
 ];

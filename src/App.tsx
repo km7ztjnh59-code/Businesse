@@ -142,6 +142,14 @@ export default function App() {
       <Footer onNavigate={(section) => {
         if (section === 'menu' || section === 'custom-cakes') {
           setCurrentPage('menu');
+        } else if (section === 'team') {
+          setCurrentPage('home');
+          setTimeout(() => {
+            const teamEl = document.getElementById('meet-the-team');
+            if (teamEl) {
+              teamEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+          }, 100);
         } else {
           setCurrentPage('home');
         }
